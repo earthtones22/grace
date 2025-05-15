@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grace Stamler</title>
+    <style>
+      @font-face {
+        font-family: "PF Pixelscript";
+        src: url("https://cdn.glitch.global/860ab520-59d4-4fde-b636-8250280b5860/PFPixelscriptPro.woff2?v=1746846661417")
+            format("woff2"),
+          url("https://cdn.glitch.global/860ab520-59d4-4fde-b636-8250280b5860/PFPixelscriptPro.woff?v=1746846623383")
+            format("woff");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      :root {
+        --text-color: #ffffff;
+        --bg-color: #000000;
+        --border-color: #ffffff;
+        --hover-accent: #ff0000; /* Red for hover, you can choose another color for the star's glow */
+        --star-glow-color: #ffff00; /* Yellow for star glow, adjust as you like */
+        --item-base-width-desktop: 160px;
+        --grid-gap-desktop: 25px;
+        --image-width-desktop: 140px;
+        --image-height-desktop: 90px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Courier New", Courier, monospace;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        overflow-x: hidden;
+        cursor: auto;
+        font-size: 13px;
+      }
+
+      h1,
+      h2,
+      h3,
+      .nav-link-text,
+      .portfolio-item p,
+      .video-specs,
+      #contact-page .contact-info-container p {
+        font-family: "PF Pixelscript", monospace;
+        color: var(--text-color);
+        letter-spacing: 1px;
+      }
+
+      #landing-page h1 {
+        font-size: 2em;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+
+      #about-page h1 {
+        font-size: 2.2em;
+        margin-bottom: 25px;
+        text-align: center;
+      }
+      #about-page h2 {
+        font-size: 1.8em;
+        margin-bottom: 15px;
+      }
+
+      .project-content-page h1,
+      #contact-page h1 {
+        font-size: 2em;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .project-content-page h2 {
+        font-size: 1.5em;
+        margin-top: 25px;
+        margin-bottom: 12px;
+        border-bottom: 1px dashed var(--border-color);
+        padding-bottom: 4px;
+      }
+      .project-content-page h3 {
+        font-size: 1.2em;
+        margin-bottom: 8px;
+      }
+
+      p {
+        line-height: 1.5;
+        margin-bottom: 12px;
+      }
+      #about-page
+        .content-container-inner
+        p:not(.cv-section p):not(.contact-info-container p),
+      .project-content-page .content-container-inner .text-column p {
+        max-width: 100%;
+      }
+      #contact-page .content-container-inner p:not(.contact-info-container p) {
+        font-family: "Courier New", Courier, monospace;
+      }
+
+      a {
+        color: var(--text-color);
+        text-decoration: none;
+      }
+      a:hover {
+        color: var(--hover-accent);
+      }
+
+      #bg-video {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        z-index: -2;
+        object-fit: cover;
+      }
+      body::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: repeating-linear-gradient(
+          0deg,
+          rgba(255, 255, 255, 0) 0px,
+          rgba(255, 255, 255, 0) 1px,
+          rgba(255, 255, 255, 0.03) 2px,
+          rgba(255, 255, 255, 0.03) 3px
+        );
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      .top-nav {
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        z-index: 1000;
+      }
+      .nav-link-text {
+        font-size: 1.3em;
+        padding: 5px 8px;
+        border: 1px solid var(--border-color);
+        display: inline-block;
+        transition: background-color 0.2s, color 0.2s;
+      }
+      .nav-link-text + .nav-link-text {
+        margin-left: 10px;
+      }
+      .nav-link-text:hover {
+        background-color: var(--text-color);
+        color: var(--bg-color);
+      }
+
+      .page-section {
+        display: none;
+        min-height: 100vh;
+        padding-top: 70px;
+        padding-bottom: 60px;
+      }
+      .page-section.active {
+        display: block;
+        animation: fadeInPage 0.5s ease-out;
+      }
+      @keyframes fadeInPage {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      #landing-page .main-container-inner {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0 15px;
+        text-align: center;
+      }
+      .portfolio-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        width: 100%;
+        max-width: 900px;
+        margin-top: 20px;
+      }
+      .portfolio-item {
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-basis: calc(50% - 8px);
+        min-width: 130px;
+        max-width: 250px;
+        text-align: center;
+        padding: 8px;
+        border: 2px dashed var(--border-color);
+        background-color: rgba(0, 0, 0, 0.5);
+        transition: transform 0.2s ease-out, border-style 0.2s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .portfolio-item:hover {
+        transform: translateY(-5px);
+        border-style: solid;
+      }
+      .portfolio-item img {
+        width: 100%;
+        max-width: var(--image-width-desktop);
+        height: auto;
+        aspect-ratio: var(--image-width-desktop) / var(--image-height-desktop);
+        object-fit: cover;
+        border: 1px solid var(--text-color);
+        margin-bottom: 8px;
+        image-rendering: pixelated;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: -webkit-optimize-contrast;
+        transition: filter 0.2s, transform 0.2s;
+      }
+      .portfolio-item:hover img {
+        filter: invert(1);
+        transform: scale(1.05);
+      }
+      .portfolio-item p {
+        font-size: 0.9em;
+        margin-top: 5px;
+      }
+
+      #about-page .content-container-inner,
+      .project-content-page .content-container-inner,
+      #contact-page .content-container-inner {
+        max-width: 90%;
+        margin: 0 auto;
+        padding: 15px;
+        border: 1px dashed var(--border-color);
+        background-color: var(--bg-color);
+      }
+      #about-page .profile-pic {
+        display: block;
+        width: 80%;
+        max-width: 250px;
+        height: auto;
+        object-fit: cover;
+        border: 2px solid var(--border-color);
+        margin: 0 auto 25px auto;
+      }
+
+      .cv-section {
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px dashed var(--border-color);
+      }
+      .cv-section h2.animated-heading {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .cv-section h3 {
+        font-family: "PF Pixelscript", monospace;
+        font-size: 1.4em;
+        margin-top: 25px;
+        margin-bottom: 10px;
+        color: var(--text-color);
+      }
+      .cv-section p {
+        font-family: "Courier New", Courier, monospace;
+        font-size: 1em;
+        margin-bottom: 6px;
+        line-height: 1.4;
+        color: var(--text-color);
+      }
+
+      #contact-page .contact-info-container {
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 30px;
+      }
+      #contact-page .contact-info-container p {
+        margin-bottom: 18px;
+        font-size: 1.3em;
+        line-height: 1.6;
+      }
+      #contact-page .contact-info-container a {
+        padding: 5px 0;
+        display: inline-block;
+      }
+
+      .project-content-page .main-video-player-wrapper {
+        max-width: 100%;
+        margin: 15px 0;
+        background: #111;
+        border: 1px solid var(--border-color);
+      }
+      .project-content-page .video-specs {
+        font-family: "PF Pixelscript", monospace; /* Ensure font consistency */
+        font-size: 0.7em;
+        text-align: center;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        line-height: 1.4;
+        color: var(--text-color);
+      }
+      .project-content-page .video-specs p {
+        margin-bottom: 3px;
+      }
+      .project-content-page .text-image-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-top: 15px;
+        margin-bottom: 25px;
+        align-items: center;
+      }
+      .project-content-page .text-column {
+        flex: 1;
+        width: 100%;
+      }
+      .project-content-page .image-column {
+        flex: 1;
+        width: 100%;
+        max-width: 450px;
+      }
+      .project-content-page .image-column img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border: 1px solid var(--border-color);
+      }
+      /* NEW STYLE FOR IMAGE CAPTION */
+      .project-content-page .image-caption {
+        font-family: "PF Pixelscript", monospace;
+        font-size: 0.7em;
+        text-align: center;
+        margin-top: 10px;
+        margin-bottom: 15px; 
+        line-height: 1.4;
+        color: var(--text-color);
+      }
+      .project-content-page .two-video-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 25px;
+      }
+      .project-content-page .side-video-column {
+        flex: 1;
+        width: 100%;
+      }
+      .project-content-page .side-video-column iframe {
+        display: block;
+        width: 100%;
+        border: 1px solid var(--border-color);
+        background: #111;
+      }
+
+      .animated-heading span {
+        display: inline-block;
+        transition: transform 0.1s, color 0.1s;
+      }
+      .animated-heading:hover span {
+        transform: translateY(-3px) scale(1.1);
+        color: var(--hover-accent);
+      }
+      .animated-heading span:nth-child(2n) {
+        transition-delay: 0.03s;
+      }
+      .animated-heading span:nth-child(3n) {
+        transition-delay: 0.06s;
+      }
+      .animated-heading span:nth-child(4n) {
+        transition-delay: 0.09s;
+      }
+
+      .fun-marquee {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        padding: 4px 0;
+        font-family: "PF Pixelscript", monospace;
+        font-size: 0.8em;
+        z-index: 1000;
+        border-top: 1px dashed var(--border-color);
+        border-bottom: 1px dashed var(--border-color);
+      }
+
+      /* === EASTER EGG STAR STYLES START === */
+      #easter-egg-star-link {
+        position: fixed;
+        top: 1000px; /* Adjust as needed */
+        left: 30px; /* Adjust as needed */
+        z-index: 50; /* Above background, below main nav */
+        display: inline-block;
+        cursor: pointer;
+        transition: transform 0.3s ease, filter 0.3s ease;
+        -webkit-tap-highlight-color: transparent; /* For touch devices */
+      }
+
+      #easter-egg-star-link .ascii-star-art {
+        font-family: "Courier New", Courier, monospace; /* Crucial for ASCII art */
+        font-size: 1.7px; /* VERY IMPORTANT: Adjust this to make the star the right subtle size. May need to be even smaller or slightly larger depending on the exact ASCII. */
+        line-height: 0.9; /* Adjust line height to be tight */
+        color: var(--text-color);
+        white-space: pre;
+        margin: 0;
+        padding: 0;
+        text-align: left;
+        letter-spacing: -0.5px; /* May help tighten the ASCII art */
+        opacity: 0.7; /* Make it a bit subtle initially */
+        transition: opacity 0.3s ease, color 0.3s ease;
+      }
+
+      #easter-egg-star-link:hover {
+        transform: scale(
+          1.1
+        ); /* Slightly enlarge the whole link area on hover */
+      }
+
+      #easter-egg-star-link:hover .ascii-star-art {
+        color: var(--star-glow-color); /* Glow color */
+        opacity: 1; /* Full opacity on hover */
+        /* You can also add a subtle text-shadow for more glow, but it might be too much for tiny ASCII */
+        /* text-shadow: 0 0 5px var(--star-glow-color); */
+      }
+      /* === EASTER EGG STAR STYLES END === */
+
+      @media (min-width: 600px) {
+        #landing-page h1 {
+          font-size: 2.5em;
+          margin-bottom: 20px;
+        }
+        .top-nav {
+          top: 20px;
+          right: 20px;
+        }
+        .nav-link-text {
+          font-size: 1.4em;
+          padding: 5px 10px;
+        }
+        #landing-page .main-container-inner {
+          padding: 0 20px;
+        }
+        .portfolio-grid {
+          gap: 20px;
+          margin-top: 25px;
+        }
+        .portfolio-item {
+          flex-basis: calc(33.33% - 14px);
+          min-width: 150px;
+          padding: 10px;
+        }
+        .portfolio-item img {
+          margin-bottom: 10px;
+        }
+        .portfolio-item p {
+          font-size: 1em;
+        }
+        .fun-marquee {
+          padding: 5px 0;
+          font-size: 0.85em;
+        }
+
+        #about-page {
+          font-size: 15px;
+        }
+        #about-page h1 {
+          font-size: 2.5em;
+          margin-bottom: 30px;
+        }
+        #about-page h2,
+        .cv-section h2.animated-heading {
+          font-size: 2em;
+          margin-bottom: 20px;
+        }
+        #about-page .content-container-inner p:not(.cv-section p) {
+          max-width: 700px;
+        }
+        #about-page .content-container-inner {
+          max-width: 800px;
+          padding: 20px;
+        }
+        #about-page .profile-pic {
+          max-width: 300px;
+          height: 400px;
+          margin-bottom: 30px;
+        }
+        .cv-section h3 {
+          font-size: 1.5em;
+        }
+        .cv-section p {
+          font-size: 0.9em;
+        }
+
+        #contact-page .contact-info-container p {
+          font-size: 1.4em;
+        }
+
+        #easter-egg-star-link {
+          top: 40px;
+          left: 40px;
+        }
+        #easter-egg-star-link .ascii-star-art {
+          font-size: 2px;
+        } /* Slightly larger on bigger screens if desired */
+      }
+      @media (min-width: 768px) {
+        body {
+          padding: 20px;
+        }
+        .project-content-page h1,
+        #contact-page h1 {
+          font-size: 2.3em;
+          margin-bottom: 30px;
+        }
+        .project-content-page h2 {
+          font-size: 1.6em;
+          margin-top: 30px;
+          margin-bottom: 15px;
+          padding-bottom: 5px;
+        }
+        .project-content-page h3 {
+          font-size: 1.3em;
+          margin-bottom: 10px;
+        }
+        .project-content-page .content-container-inner,
+        #contact-page .content-container-inner {
+          max-width: 800px;
+          padding: 20px;
+        }
+        .project-content-page .main-video-player-wrapper {
+          margin: 20px 0;
+        }
+        .project-content-page .video-specs {
+          margin-top: 15px;
+          margin-bottom: 30px;
+        }
+        .project-content-page .image-caption {
+            margin-bottom: 20px; /* Adjust bottom margin for larger screens */
+        }
+        .project-content-page .text-image-layout {
+          flex-direction: row;
+          gap: 25px;
+          margin-top: 20px;
+          margin-bottom: 30px;
+          align-items: flex-start;
+        }
+        .project-content-page .image-column {
+          max-width: none;
+        }
+        .project-content-page .two-video-layout {
+          flex-direction: row;
+          gap: 20px;
+          margin-top: 30px;
+        }
+
+        #contact-page .contact-info-container p {
+          font-size: 1.5em;
+        }
+      }
+      @media (min-width: 900px) {
+        #landing-page h1 {
+          font-size: 3em;
+        }
+        .nav-link-text {
+          font-size: 1.5em;
+        }
+        .portfolio-grid {
+          gap: var(--grid-gap-desktop);
+          margin-top: 30px;
+          max-width: 1085px;
+        }
+        .portfolio-item {
+          flex-grow: 0;
+          flex-shrink: 0;
+          flex-basis: var(--item-base-width-desktop);
+          width: var(--item-base-width-desktop);
+          max-width: var(--item-base-width-desktop);
+        }
+        .portfolio-item img {
+          width: var(--image-width-desktop);
+          height: var(--image-height-desktop);
+          aspect-ratio: unset;
+        }
+        .fun-marquee {
+          font-size: 0.9em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <video autoplay muted loop playsinline id="bg-video">
+      <source
+        src="https://cdn.glitch.global/860ab520-59d4-4fde-b636-8250280b5860/Untitled%20design%20(1).mp4?v=1746845772205"
+        type="video/mp4"
+      />
+      Your browser does not support the video tag.
+    </video>
+
+    <!-- === EASTER EGG STAR HTML START === -->
+    <a
+      href="YOUR_DRAWINGS_PAGE_URL_HERE"
+      id="easter-egg-star-link"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Hidden link to drawings"
+    >
+      <pre class="ascii-star-art">
+⠀⠀⠀⢸⣦⡀⠀⠀⠀⠀⢀⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⢸⣏⠻⣶⣤⡶⢾⡿⠁⠀⢠⣄⡀⢀⣴⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⣀⣼⠷⠀⠀⠁⢀⣿⠃⠀⠀⢀⣿⣿⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠴⣾⣯⣅⣀⠀⠀⠀⠈⢻⣦⡀⠒⠻⠿⣿⡿⠿⠓⠂⠀⠀⢀⡇⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠉⢻⡇⣤⣾⣿⣷⣿⣿⣤⠀⠀⣿⠁⠀⠀⠀⢀⣴⣿⣿⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠸⣿⡿⠏⠀⢀⠀⠀⠿⣶⣤⣤⣤⣄⣀⣴⣿⡿⢻⣿⡆⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠟⠁⠀⢀⣼⠀⠀⠀⠹⣿⣟⠿⠿⠿⡿⠋⠀⠘⣿⣇⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢳⣶⣶⣿⣿⣇⣀⠀⠀⠙⣿⣆⠀⠀⠀⠀⠀⠀⠛⠿⣿⣦⣤⣀⠀⠀
+⠀⠀⠀⠀⠀⠀⣹⣿⣿⣿⣿⠿⠋⠁⠀⣹⣿⠳⠀⠀⠀⠀⠀⠀⢀⣠⣽⣿⡿⠟⠃
+⠀⠀⠀⠀⠀⢰⠿⠛⠻⢿⡇⠀⠀⠀⣰⣿⠏⠀⠀⢀⠀⠀⠀⣾⣿⠟⠋⠁⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠋⠀⠀⣰⣿⣿⣾⣿⠿⢿⣷⣀⢀⣿⡇⠁⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠋⠉⠁⠀⠀⠀⠀⠙⢿⣿⣿⠇⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀
+        </pre
+      >
+    </a>
+    <!-- === EASTER EGG STAR HTML END === -->
+
+    <nav class="top-nav">
+      <a href="#landing" id="nav-link-dynamic" class="nav-link-text"
+        >about/cv</a
+      >
+      <a href="#contact-page" id="nav-link-contact" class="nav-link-text"
+        >contact</a
+      >
+    </nav>
+
+    <main id="page-content-area">
+      <section id="landing-page" class="page-section">
+        <div class="main-container-inner">
+          <h1 class="animated-heading">Grace Stamler</h1>
+          <div class="portfolio-grid">
+            <a
+              href="#project1-page"
+              class="portfolio-item"
+              data-page="project1-page"
+            >
+              <img
+                src="https://cdn.glitch.global/2069f594-d787-4434-853b-578d86aa30ea/mudpicfinal-32%20(1).jpg?v=1747330413429"
+                alt="Cake It Icon"
+              />
+              <p>
+                Cake It <br />
+                (2025)
+              </p>
+            </a>
+
+            <a
+              href="#project2-page"
+              class="portfolio-item"
+              data-page="project2-page"
+            >
+              <img
+                src="https://cdn.glitch.global/2069f594-d787-4434-853b-578d86aa30ea/914B3548-D4B5-41E4-9584-3C022F9AC6EB.png?v=1747236427596"
+                alt="Dissection Icon"
+              />
+              <p>
+                Dissection <br />
+                (2024)
+              </p>
+            </a>
+
+            <a
+              href="#give-out-light-page"
+              class="portfolio-item"
+              data-page="give-out-light-page"
+            >
+              <img
+                src="https://cdn.glitch.global/860ab520-59d4-4fde-b636-8250280b5860/screenshot-2025-01-26-at-6.17.55e280afpm-edited.png?v=1746847190553"
+                alt="Give out Light Icon"
+              />
+              <p>Give out Light <br />(2024)</p>
+            </a>
+            <a
+              href="#project3-page"
+              class="portfolio-item"
+              data-page="project3-page"
+            >
+              <img
+                src="https://cdn.glitch.global/860ab520-59d4-4fde-b636-8250280b5860/Screenshot%202025-05-09%20231736.png?v=1746847091872"
+                alt="amorphisms II Icon"
+              />
+              <p>amorphisms II <br />(2024)</p>
+            </a>
+            <a
+              href="#project4-page"
+              class="portfolio-item"
+              data-page="project4-page"
+            >
+              <img
+                src="https://cdn.glitch.global/860ab520-59d4-4fde-b636-8250280b5860/Screenshot%202025-05-09%20231726.png?v=1746847077813"
+                alt="Kissing Lessons Icon"
+              />
+              <p>Kissing Lessons (2023)</p>
+            </a>
+            <a
+              href="#project5-page"
+              class="portfolio-item"
+              data-page="project5-page"
+            >
+              <img
+                src="https://cdn.glitch.global/860ab520-59d4-4fde-b636-8250280b5860/Screenshot%202025-05-09%20231717.png?v=1746847092776"
+                alt="Fish Department Icon"
+              />
+              <p>Fish Department (2022)</p>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="about-page" class="page-section">
+        <div class="content-container-inner">
+          <h1 class="animated-heading">Who?</h1>
+          <img
+            src="https://cdn.glitch.global/6d3db38e-883c-434b-8a6e-d4c3b690fcb3/img_8922.jpg?v=1746848174206"
+            alt="Grace Stamler"
+            class="profile-pic"
+          />
+          <p>
+            Toronto born, based in Tiohtià:ke/Mooniyang/Montreal, Grace Stamler
+            uses experimental video installation to explore the multidimensional
+            nature of queerness. Her work offers asylum to the strange. Girls in
+            gowns, gore, eroticism, and monsters permeate her work, blurring
+            boundaries of the pure and the grotesque. Here, Grace fosters
+            conversation about patriarchy, capitalism, the psychiatric-medical
+            industrial complex, and lesbian-queer experience.
+          </p>
+          <p>
+            Stamler is in her final year of a Studio Arts BFA with a
+            specialization in Intermedia from Concordia University. She has
+            exhibited work in galleries across Canada and internationally. At an
+            artist residency in Bogota, Colombia, she created a piece to exhibit
+            at International ImageFest (2024). Stamler runs
+            <a
+              href="https://www.mudcollective.ca/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >MUD</a
+            >—an art collective with a mission of uplifting underrepresented
+            artists—with collaborator Julia Belmore, recently having organized
+            and curated an exhibition at gallery Ada X with the support of
+            FASA’s Community Contribution Special Project Grant (2024). Other
+            grants she has received include the Peter N. Thomson Family Field
+            School Award (2024) and the L’asterisk Leadership Fund (2024).
+          </p>
+
+          <div class="cv-section">
+            <h2 class="animated-heading">CV</h2>
+            <h3>Education</h3>
+            <p>
+              2025 Concordia University, BFA in Studio Arts and Psychology,
+              Montreal QC
+            </p>
+            <h3>Curatorial Projects</h3>
+            <p>2025 Co-curator of Pile, at Galerie POPOP, Montreal QC</p>
+            <p>2025 Co-curator of Glue, at Ada X, Montreal QC</p>
+            <h3>Residencies</h3>
+            <p>
+              2024 Art, Music, Design, and Science Interactions, at Universidad
+              Jorge Tadeo Lozano, Bogotá Colombia
+            </p>
+            <h3>Grants</h3>
+            <p>
+              2025 Community Contribution Special Project Grant, FASA, Montreal
+              QC
+            </p>
+            <p>
+              2024 Community Contribution Special Project Grant, FASA, Montreal
+              QC
+            </p>
+            <p>2024 Leadership Fund Grant, L’Asterisk, Montreal QC</p>
+            <p>2024 Peter N. Thomson Family Field School Awards, Montreal QC</p>
+            <h3>Exhibitions & Publications</h3>
+            <p>2025 There’d Better Be A Mirrorball, Sawa House, Montreal QC</p>
+            <p>2024 Ballads of Displacement, VAV Gallery, Montreal QC</p>
+            <p>2024 Mitochondrial Drama, 4th Space, Montreal QC</p>
+            <p>2024 ImageFest, UTadeo, Bogotá Colombia</p>
+            <p>
+              2024 MAGNIFIED Arts Spring Exhibition, Typist Studios, Toronto ON
+            </p>
+            <p>2024 FASA Community Art Exhibit, FARR, Montreal QC</p>
+            <p>2024 Soliloquies Anthology Edition 28.1, Montreal QC</p>
+            <p>
+              2023 IMCA 400 Fundraiser Screening, Notre-Dame-Des-Quilles,
+              Montreal QC
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROJECT SECTIONS (project1 to project5) START -->
+      <section id="project1-page" class="page-section project-content-page">
+        <div class="content-container-inner">
+          <h1 class="animated-heading">Cake It</h1>
+          <div class="main-video-player-wrapper">
+            <div style="padding: 56.25% 0 0 0; position: relative">
+              <iframe
+                src="https://player.vimeo.com/video/1073422522?dnt=1"
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                "
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen
+                title="Cake It"
+              >
+              </iframe>
+            </div>
+            <script src="https://player.vimeo.com/api/player.js"></script>
+          </div>
+          <div class="video-specs">
+            <p>Single channel video,</p>
+            <p>7:20; 1920×1080.</p>
+          </div>
+          <div class="text-image-layout">
+            <div class="text-column">
+              <p>
+                Cake It is an single-channel experimental video that explores
+                the cycle of idolization and destruction through cakes
+                representing figures of influence. The work critiques how
+                capitalism commodifies figures of power, turning them into
+                fleeting, consumable objects. Using rapid-cut editing, vibrant
+                colors, and glitchy imagery, the piece reflects on the
+                ephemerality of iconicity and iconoclasm. By exploring the
+                religious nature of how modern capitalism is revered, Cake It
+                exposes the make-believe nature of capitalism, thus the
+                opportunity to reclaim personal agency in a commodified world.
+              </p>
+            </div>
+            <div class="image-column">
+              <img
+                src="https://cdn.glitch.global/2069f594-d787-4434-853b-578d86aa30ea/cakeitimca.jpg?v=1747235550095"
+                alt="Cake It still image"
+              />
+              <p class="image-caption">Accept All Cookies (2025), Concordia University, Montréal QC</p>
+              
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="project2-page" class="page-section project-content-page">
+        <div class="content-container-inner">
+          <h1 class="animated-heading">Dissection</h1>
+          <div class="main-video-player-wrapper">
+            <div style="padding: 56.25% 0 0 0; position: relative">
+              <iframe
+                src="https://player.vimeo.com/video/1083180009?dnt=1"
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                "
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen
+                title="Dissection"
+              >
+              </iframe>
+            </div>
+            <script src="https://player.vimeo.com/api/player.js"></script>
+          </div>
+          <div class="video-specs">
+            <p>Video installation, 4:31 (looped); Dirt, video projection.</p>
+            <p>Dimensions variable.</p>
+          </div>
+          <div class="text-image-layout">
+            <div class="text-column">
+              <p>
+                In Dissection, the preparation of chicken exists as the
+                congenital nature of internalized misogyny. The two women
+                respond differently to their circumstance, though in neither is
+                the “body” left untouched. In the end, the women join to care
+                for the bones through burial, giving the body back to the
+                earth—back to itself.
+              </p>
+            </div>
+            <div class="image-column">
+              <img
+                src="https://cdn.glitch.global/2069f594-d787-4434-853b-578d86aa30ea/914B3548-D4B5-41E4-9584-3C022F9AC6EB.png?v=1747236427596"
+                alt="Dissection still image"
+              />
+              <p class="image-caption">Grace Stamler, Dissection (2024)</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="give-out-light-page"
+        class="page-section project-content-page"
+      >
+        <div class="content-container-inner">
+          <h1 class="animated-heading">Give out Light</h1>
+          <div class="main-video-player-wrapper">
+            <div style="padding: 56.25% 0 0 0; position: relative">
+              <iframe
+                src="https://player.vimeo.com/video/1050090193?dnt=1"
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                "
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen
+                title="Give out Light"
+              >
+              </iframe>
+            </div>
+            <script src="https://player.vimeo.com/api/player.js"></script>
+          </div>
+          <div class="video-specs">
+            <p>
+              Double channel video on two CRT monitors, bedside tables, bed,
+              spotlight
+            </p>
+            <p>Dimensions variable.</p>
+          </div>
+          <div class="text-image-layout">
+            <div class="text-column">
+              <p>
+                Give out Light is a two channel video installation offering a
+                double narrative. In one, a suited figure, presented as an
+                ambiguous authority, inspects a sleeping body: poking, prodding,
+                and taking notes. In the second, the sleeping person chases the
+                suited figure through a dark, abandoned church, together
+                reaching a stained-glass-lit expanse. The video installation,
+                presenting as a bedroom scene, questions institutionalized power
+                structures by telling the story of parallel truths.
+              </p>
+            </div>
+            <div class="image-column">
+              <img
+                src="https://cdn.glitch.global/92220948-4ab6-47fc-ad38-61e63b965167/img_4446-2.jpg?v=1746849681793"
+                alt="Give out Light installation view"
+              />
+              <p class="image-caption">Give out Light, installation view.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="project3-page" class="page-section project-content-page">
+        <div class="content-container-inner">
+          <h1 class="animated-heading">amorphisms II</h1>
+          <div class="main-video-player-wrapper">
+            <div style="padding: 56.25% 0 0 0; position: relative">
+              <iframe
+                src="https://player.vimeo.com/video/1050101996?dnt=1"
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                "
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen
+                title="amorphisms II"
+              >
+              </iframe>
+            </div>
+            <script src="https://player.vimeo.com/api/player.js"></script>
+          </div>
+          <div class="video-specs">
+            <p>Single-channel video, 2:54</p>
+            <p>2:54; 1920×1080.</p>
+          </div>
+          <div class="text-image-layout">
+            <div class="text-column">
+              <p>
+                In trance states, the barrier between being and universe breaks
+                down. amorphisms II uses experimental video to document the
+                smallest and most amorphous forms of being—eggs and
+                cells—exploring rebirth through the incomprehensible.
+              </p>
+              <p>
+                amorphisms II is one slice of a multi-part collaborative work,
+                into the unified field. The work was created for exhibition at
+                International ImageFestival 2024 as part of UTadeo’s artist
+                residency program in Bogotá, Colombia.
+              </p>
+            </div>
+            <div class="image-column">
+              <img
+                src="https://cdn.glitch.global/2069f594-d787-4434-853b-578d86aa30ea/Image%2016.png?v=1747238413022"
+                alt="amorphisms II still image"
+              />
+              <p class="image-caption">ImageFestival (2024), UTadeo, Bogotá Colombia</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="project4-page" class="page-section project-content-page">
+        <div class="content-container-inner">
+          <h1 class="animated-heading">Kissing Lessons</h1>
+          <div class="main-video-player-wrapper">
+            <div style="padding: 56.25% 0 0 0; position: relative">
+              <iframe
+                src="https://player.vimeo.com/video/1064370586?dnt=1"
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                "
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen
+                title="Kissing Lessons"
+              >
+              </iframe>
+            </div>
+            <script src="https://player.vimeo.com/api/player.js"></script>
+          </div>
+          <div class="video-specs">
+            <p>Single-channel video</p>
+            <p>2:16; 3840×2160.</p>
+          </div>
+          <div class="text-image-layout">
+            <div class="text-column">
+              <p>
+                Kissing Lessons invites the viewer to participate in
+                lighthearted slumber party antics overlain with horror and
+                unease. It is a classic lesbian coming of age story gone
+                sadistic—in hyperbolic extension of how these experiences are
+                understood at the time.
+              </p>
+            </div>
+            <div class="image-column">
+              <img
+                src="https://cdn.glitch.global/2069f594-d787-4434-853b-578d86aa30ea/mudpicfinal-31.jpg?v=1747238674285"
+                alt="Kissing Lessons still image"
+              />
+              <p class="image-caption">There’d Better be a Mirrorball  (2025), Art Matters at Sawa House, Montréal QC</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="project5-page" class="page-section project-content-page">
+        <div class="content-container-inner">
+          <h1 class="animated-heading">Fish Department</h1>
+          <div class="main-video-player-wrapper">
+            <div style="padding: 56.25% 0 0 0; position: relative">
+              <iframe
+                src="https://player.vimeo.com/video/1050058665?dnt=1"
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                "
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen
+                title="Fish Department"
+              >
+              </iframe>
+            </div>
+            <script src="https://player.vimeo.com/api/player.js"></script>
+          </div>
+          <div class="video-specs">
+            <p>Single-channel video</p>
+            <p>1:51; 3840×2160.</p>
+          </div>
+          <div class="text-image-layout">
+            <div class="text-column">
+              <p>
+                In Fish Department, the fish is the spectacle, hoping to be
+                chosen; always observed but never seen. When the subject gains
+                awareness of this construction, its internalization and
+                inescapability become clear. The aisles of glass tanks and the
+                murky pool exist as reflection, the gaze is both upon her and is
+                her.
+              </p>
+            </div>
+            <div class="image-column">
+              <img
+                src="https://cdn.glitch.global/2069f594-d787-4434-853b-578d86aa30ea/mudpicfinal-33.jpg?v=1747238900539"
+                alt="Fish Department still image"
+              />
+              <p class="image-caption">Ballads of Displacement (2024), VAV Gallery, Montréal QC</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- PROJECT SECTIONS END -->
+
+      <!-- NEW CONTACT PAGE SECTION START -->
+      <section id="contact-page" class="page-section project-content-page">
+        <div class="content-container-inner">
+          <h1 class="animated-heading">Contact</h1>
+          <div class="contact-info-container">
+            <p>
+              <a href="mailto:grace.stamler@gmail.com"
+                >grace.stamler@gmail.com</a
+              >
+            </p>
+            <p>
+              <a
+                href="https://vimeo.com/your_vimeo_username_here" 
+                target="_blank"
+                rel="noopener noreferrer"
+                >Vimeo</a
+              >
+            </p>
+            <p>
+              <a
+                href="https://instagram.com/your_instagram_username_here" 
+                target="_blank"
+                rel="noopener noreferrer"
+                >Instagram</a
+              >
+            </p>
+          </div>
+        </div>
+      </section>
+      <!-- NEW CONTACT PAGE SECTION END -->
+    </main>
+
+    <div class="fun-marquee">
+      <marquee behavior="scroll" direction="left" scrollamount="4">
+        +++ grace.stamler@gmail.com +++ grace.stamler@gmail.com +++
+        grace.stamler@gmail.com +++ grace.stamler@gmail.com +++
+        grace.stamler@gmail.com +++ grace.stamler@gmail.com +++
+        grace.stamler@gmail.com +++ grace.stamler@gmail.com +++
+        grace.stamler@gmail.com +++ grace.stamler@gmail.com +++
+        grace.stamler@gmail.com +++ grace.stamler@gmail.com +++
+        grace.stamler@gmail.com +++ grace.stamler@gmail.com +++
+        grace.stamler@gmail.com +++ grace.stamler@gmail.com +++
+        grace.stamler@gmail.com +++ grace.stamler@gmail.com +++
+        grace.stamler@gmail.com +++ grace.stamler@gmail.com +++
+        grace.stamler@gmail.com +++ grace.stamler@gmail.com +++
+        grace.stamler@gmail.com +++ grace.stamler@gmail.com +++
+      </marquee>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const pageSections = document.querySelectorAll(".page-section");
+        const navLinkDynamic = document.getElementById("nav-link-dynamic");
+        const navLinkContact = document.getElementById("nav-link-contact");
+        const portfolioItems = document.querySelectorAll(".portfolio-item");
+        let vimeoPlayers = {};
+
+        function pauseAllVideos() {
+          document.querySelectorAll("video").forEach((video) => {
+            if (video.id === "bg-video" && !video.paused) {
+              video.pause();
+            }
+          });
+          for (const playerId in vimeoPlayers) {
+            if (
+              vimeoPlayers[playerId] &&
+              typeof vimeoPlayers[playerId].pause === "function"
+            ) {
+              vimeoPlayers[playerId].pause().catch(function (error) {
+                // console.warn("Vimeo pause error:", error);
+              });
+            }
+          }
+        }
+
+        function initializeVimeoPlayer(iframe) {
+          if (typeof Vimeo !== "undefined" && iframe) {
+            const player = new Vimeo.Player(iframe);
+            vimeoPlayers[iframe.src] = player;
+          }
+        }
+
+        function showPage(targetPageId) {
+          const previouslyActivePage = document.querySelector(
+            ".page-section.active"
+          );
+          if (previouslyActivePage) {
+            previouslyActivePage
+              .querySelectorAll('iframe[src*="vimeo.com"]')
+              .forEach((iframe) => {
+                if (
+                  vimeoPlayers[iframe.src] &&
+                  typeof vimeoPlayers[iframe.src].pause === "function"
+                ) {
+                  vimeoPlayers[iframe.src].pause().catch((e) => {});
+                }
+              });
+            previouslyActivePage
+              .querySelectorAll("video:not(#bg-video)")
+              .forEach((video) => {
+                if (!video.paused) video.pause();
+              });
+          }
+
+          pageSections.forEach((section) => {
+            section.classList.remove("active");
+            if (section.id === targetPageId) {
+              section.classList.add("active");
+              section
+                .querySelectorAll('iframe[src*="vimeo.com"]')
+                .forEach((iframe) => {
+                  if (!vimeoPlayers[iframe.src]) {
+                    initializeVimeoPlayer(iframe);
+                  }
+                });
+            }
+          });
+
+          if (targetPageId === "landing-page") {
+            navLinkDynamic.textContent = "about/cv";
+            navLinkDynamic.href = "#about-page";
+            const bgVideo = document.getElementById("bg-video");
+            if (bgVideo.paused) {
+              bgVideo.play().catch((e) => {});
+            }
+          } else {
+            navLinkDynamic.textContent = "home";
+            navLinkDynamic.href = "#landing-page";
+            document.getElementById("bg-video").pause();
+          }
+
+          window.scrollTo(0, 0);
+
+          const activePage = document.getElementById(targetPageId);
+          if (activePage) {
+            activePage
+              .querySelectorAll(".animated-heading:not(.js-animated)")
+              .forEach((heading) => {
+                initializeAnimatedHeading(heading);
+              });
+          }
+        }
+
+        function initializeAnimatedHeading(heading) {
+          if (heading.classList.contains("js-animated")) return;
+          const text = heading.textContent.trim();
+          heading.innerHTML = "";
+          text.split("").forEach((letter) => {
+            const span = document.createElement("span");
+            span.textContent = letter === " " ? "\u00A0" : letter;
+            heading.appendChild(span);
+          });
+          heading.classList.add("js-animated");
+        }
+
+        document.querySelectorAll(".animated-heading").forEach((heading) => {
+          initializeAnimatedHeading(heading);
+        });
+
+        navLinkDynamic.addEventListener("click", (e) => {
+          e.preventDefault();
+          const targetPageId = e.target.hash.substring(1);
+          showPage(targetPageId);
+          window.location.hash = targetPageId;
+        });
+
+        if (navLinkContact) {
+          navLinkContact.addEventListener("click", (e) => {
+            e.preventDefault();
+            const targetPageId = e.target.hash.substring(1);
+            showPage(targetPageId);
+            window.location.hash = targetPageId;
+          });
+        }
+
+        portfolioItems.forEach((item) => {
+          item.addEventListener("click", (e) => {
+            e.preventDefault();
+            const targetPageId = item.dataset.page;
+            showPage(targetPageId);
+            window.location.hash = targetPageId;
+          });
+        });
+
+        function loadPageFromHash() {
+          const hash = window.location.hash.substring(1);
+          document
+            .querySelectorAll(
+              '.project-content-page iframe[src*="vimeo.com"], #contact-page iframe[src*="vimeo.com"]'
+            )
+            .forEach((iframe) => {
+              initializeVimeoPlayer(iframe);
+            });
+
+          if (hash && document.getElementById(hash)) {
+            showPage(hash);
+          } else {
+            showPage("landing-page");
+            if (
+              window.location.hash !== "#landing-page" &&
+              window.location.hash !== ""
+            ) {
+              window.location.hash = "landing-page";
+            } else if (window.location.hash === "") {
+              window.location.hash = "landing-page";
+            }
+          }
+        }
+
+        window.addEventListener("hashchange", loadPageFromHash);
+        loadPageFromHash();
+
+        const initialHash = window.location.hash.substring(1);
+        const bgVideo = document.getElementById("bg-video");
+        if (initialHash === "landing-page" || initialHash === "") {
+          if (bgVideo.paused) {
+            bgVideo
+              .play()
+              .catch((e) => console.warn("BG video autoplay failed", e));
+          }
+        } else {
+          bgVideo.pause();
+        }
+      });
+    </script>
+  </body>
+</html>
