@@ -263,24 +263,27 @@
         padding-top: 20px;
         border-top: 1px dashed var(--border-color);
       }
-      .cv-section h2.animated-heading {
+      .cv-section h2.animated-heading { /* Existing style for "CV" title */
         font-size: 1.8em;
         margin-bottom: 20px;
         text-align: center;
       }
-      .cv-section h3 {
+      .cv-section h3 { /* This will style the new CV category headers */
         font-family: "PF Pixelscript", monospace;
-        font-size: 1.4em;
+        font-size: 1.4em; /* You might want to adjust this if the text is too long */
         margin-top: 25px;
         margin-bottom: 10px;
         color: var(--text-color);
+        white-space: pre; /* Helps preserve spacing and underscores if needed, but might affect wrapping */
+                         /* Consider text-transform: uppercase; if not already done in HTML */
       }
-      .cv-section p {
+      .cv-section p { /* This will style the new CV entries */
         font-family: "Courier New", Courier, monospace;
         font-size: 1em;
         margin-bottom: 6px;
         line-height: 1.4;
         color: var(--text-color);
+        white-space: pre-wrap; /* To ensure spaces are respected and text wraps */
       }
 
       #contact-page .contact-info-container {
@@ -500,7 +503,7 @@
           margin-bottom: 30px;
         }
         .cv-section h3 {
-          font-size: 1.5em;
+          font-size: 1.5em; /* Adjusted for potentially longer text, review if it breaks layout */
         }
         .cv-section p {
           font-size: 0.9em;
@@ -760,47 +763,38 @@
             with the two-time support of FASA’s Community Contribution Special Project Grant (2024, 2025). 
           </p>
 
+          <!-- UPDATED CV SECTION START -->
           <div class="cv-section">
             <h2 class="animated-heading">CV</h2>
-            <h3>Education</h3>
-            <p>
-              2025 Concordia University, BFA in Studio Arts and Psychology,
-              Montreal QC
-            </p>
-            <h3>Curatorial Projects</h3>
-            <p>2025 Co-curator of Pile, at Galerie POPOP, Montreal QC</p>
-            <p>2025 Co-curator of Glue, at Ada X, Montreal QC</p>
-            <h3>Residencies</h3>
-            <p>
-              2024 Art, Music, Design, and Science Interactions, at Universidad
-              Jorge Tadeo Lozano, Bogotá Colombia
-            </p>
-            <h3>Grants</h3>
-            <p>
-              2025 Community Contribution Special Project Grant, FASA, Montreal
-              QC
-            </p>
-            <p>
-              2024 Community Contribution Special Project Grant, FASA, Montreal
-              QC
-            </p>
-            <p>2024 Leadership Fund Grant, L’Asterisk, Montreal QC</p>
-            <p>2024 Peter N. Thomson Family Field School Awards, Montreal QC</p>
-            <h3>Exhibitions & Publications</h3>
-            <p>2025 There’d Better Be A Mirrorball, Sawa House, Montreal QC</p>
-            <p>2024 Ballads of Displacement, VAV Gallery, Montreal QC</p>
-            <p>2024 Mitochondrial Drama, 4th Space, Montreal QC</p>
-            <p>2024 ImageFest, UTadeo, Bogotá Colombia</p>
-            <p>
-              2024 MAGNIFIED Arts Spring Exhibition, Typist Studios, Toronto ON
-            </p>
-            <p>2024 FASA Community Art Exhibit, FARR, Montreal QC</p>
-            <p>2024 Soliloquies Anthology Edition 28.1, Montreal QC</p>
-            <p>
-              2023 IMCA 400 Fundraiser Screening, Notre-Dame-Des-Quilles,
-              Montreal QC
-            </p>
+            <h3>Education_______________________________</h3>
+            <p>2025          Concordia University, BFA in Studio Arts and Psychology, Montreal QC</p>
+            
+            <h3>Curatorial Projects_____________________</h3>
+            <p>2025          Fold, galerie POPOP, Montreal QC</p>
+            <p>2025          Glue, Ada X, Montreal QC</p>
+        
+            <h3>Residencies_____________________________</h3>
+            <p>2024          Art, Music, Design, and Science Interactions, at Universidad Jorge Tadeo Lozano, Bogotá Colombia</p>
+        
+            <h3>Grants__________________________________</h3>
+            <p>2025          Community Contribution Special Project Grant, FASA, Montreal QC</p>
+            <p>2024          Community Contribution Special Project Grant, FASA, Montreal QC</p>
+            <p>2024          Leadership Fund Grant, L’Asterisk, Montreal QC</p>
+            <p>2024          Peter N. Thomson Family Field School Awards, Montreal QC</p>
+        
+            <h3>Exhibitions & Publications______________</h3>
+            <p>2025         Moving Image Arts Screening, Concordia University, Montreal QC</p>
+            <p>2025          Accept All Cookies, Concordia University, Montreal QC</p>
+            <p>2025          There’d Better Be A Mirrorball, Arts Matters at Sawa House, Montreal QC</p>
+            <p>2024          Ballads of Displacement, VAV Gallery, Montreal QC</p>
+            <p>2024          Mitochondrial Drama, 4th Space, Montreal QC</p>
+            <p>2024          ImageFestival, UTadeo, Bogotá Colombia</p>
+            <p>2024          MAGNIFIED Arts Spring Exhibition, Typist Studios, Toronto ON</p>
+            <p>2024          FASA Community Art Exhibit, FARR, Montreal QC</p>
+            <p>2024          Soliloquies Anthology Edition 28.1, Montreal QC</p>
+            <p>2023          IMCA 400 Fundraiser Screening, Notre-Dame-Des-Quilles, Montreal QC</p>
           </div>
+          <!-- UPDATED CV SECTION END -->
         </div>
       </section>
 
